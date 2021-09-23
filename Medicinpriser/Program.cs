@@ -1,7 +1,9 @@
 ﻿
 //using Spire.Xls;
 using Aspose.Cells;
+using Medicinpriser.Models;
 using System;
+using System.Collections.Generic;
 
 namespace Medicinpriser
 {
@@ -21,7 +23,7 @@ namespace Medicinpriser
     static void Main(string[] args)
     {
       // Replace path for your file
-      readXLS(@"C:\Users\Chril\Desktop\Programming\Medicinpriser\Medicinpriser\Medicinpriser\lmpriser_eSundhed_210920.xlsx"); // or "*.xlsx"
+      readXLS(@"C:\Users\Chril\Desktop\Programmering\MedicinCalculator\Medicinpriser\lmpriser_eSundhed_210920.xlsx"); // or "*.xlsx"
       Console.ReadKey();
     }
 
@@ -40,15 +42,25 @@ namespace Medicinpriser
       int rowCount = cells.MaxDataRow;
       int columnCount = cells.MaxDataColumn;
 
+      var dataTable = cells.ExportDataTable(0, 0, rowCount, columnCount);
+
       // Current cell value
       string strCell = "";
 
       Console.WriteLine(String.Format("rowCount={0}, columnCount={1}", rowCount, columnCount));
 
-      for (int row = 0; row <= rowCount; row++) // Numeration starts from 0 to MaxDataRow
+      List<Product> products = new List<Product>();
+
+      for (int row = 1; row <= rowCount; row++) // Numeration starts from 0 to MaxDataRow
       {
-        for (int column = 0; column <= columnCount; column++)  // Numeration starts from 0 to MaxDataColumn
+        for (int column = 1; column <= columnCount; column++)  // Numeration starts from 0 to MaxDataColumn
         {
+        var row2 = cells.Columns[0];
+          Product product = new Product();
+          if (column < 8) {
+            //product.ATC = cells[row, column].Value;
+
+          }
           strCell = "";
           strCell = Convert.ToString(cells[row, column].Value);
           if (String.IsNullOrEmpty(strCell))
