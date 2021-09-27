@@ -51,28 +51,49 @@ namespace Medicinpriser
 
       List<Product> products = new List<Product>();
 
-      for (int row = 1; row <= rowCount; row++) // Numeration starts from 0 to MaxDataRow
+      for (int i = 1; i <= rowCount; i++) // Numeration starts from 0 to MaxDataRow
       {
-        for (int column = 1; column <= columnCount; column++)  // Numeration starts from 0 to MaxDataColumn
-        {
-        var row2 = cells.Columns[0];
-          Product product = new Product();
-          if (column < 8) {
-            //product.ATC = cells[row, column].Value;
+        Product product = new Product();
+        product.ATC = cells.GetCell(i, 0).StringValue;
+          product.Medicine = cells.GetCell(i, 1).StringValue;
+        product.ItemNumber = int.Parse(cells.GetCell(i, 2).StringValue);
+          product.Packing = cells.GetCell(i, 3).StringValue;
+          product.Strength = cells[i, 4].Value != null ? cells.GetCell(i, 4).StringValue : "";
+          product.Form = cells.GetCell(i, 5).StringValue;
+          product.Firm = cells.GetCell(i, 6).StringValue;
+          product.Indicator = cells.GetCell(i, 7).StringValue;
+        product.DateAndPrices = new List<DateAndPrice>();
 
-          }
+        for (int j = 8; j <= columnCount; j++)  // Numeration starts from 0 to MaxDataColumn
+        {
           strCell = "";
-          strCell = Convert.ToString(cells[row, column].Value);
-          if (String.IsNullOrEmpty(strCell))
-          {
+          strCell = Convert.ToString(cells[i, j].Value);
+          if (cells[i, j].Value == null) {
+            Console.WriteLine("No value");
             continue;
           }
-          else
-          {
-            // Do your staff here
-            Console.WriteLine(strCell);
-          }
+
+          var date = cells[0, j].StringValue;
+          var year = int.Parse(date.Substring(0, 4));
+          var month = int.Parse(date.Substring(4, 2));
+          var day = int.Parse(date.Substring(6, 2));
+
+          
+          product.DateAndPrices.Add(new DateAndPrice() { Date = new DateTime(year, month, day), Price = cells[i, j].DoubleValue });
+          //if (String.IsNullOrEmpty(strCell))
+          //{
+          //  continue;
+          //}
+          //else
+          //{
+          //  // Do your staff here
+          //  Console.WriteLine(strCell);
+          //}
         }
+        products.Add(product);
+      }
+      foreach (var product in products) {
+        Console.WriteLine(product.ToString());
       }
     }
   }

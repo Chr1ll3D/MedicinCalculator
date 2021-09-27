@@ -7,7 +7,7 @@ namespace Medicinpriser.Models
 {
   public class Product
   {
-    public int VareNumber { get; set; }
+    public int ItemNumber { get; set; }
     public string ATC { get; set; }
     public string Medicine { get; set; }
     public string Packing { get; set; }
@@ -17,5 +17,13 @@ namespace Medicinpriser.Models
     public string Indicator { get; set; }
     public List<DateAndPrice> DateAndPrices { get; set; }
 
+    public override string ToString() {
+      var text = $"ItemNumber: {ItemNumber}, ATC: {ATC}, Medicine: {Medicine}, Packing: {Packing}, Strength: {Strength}, Form: {Form}, Firm: {Firm}, Indicator: {Indicator}\n"
+                + "----------------------------------------------------------------------------------------------------------------------------------------------------------\n";
+      foreach (DateAndPrice dateAndPrice in DateAndPrices) {
+        text += dateAndPrice.ToString();
+      }
+      return text;
+    }
   }
 }
